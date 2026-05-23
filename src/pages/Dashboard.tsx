@@ -50,8 +50,8 @@ export default function Dashboard() {
     const margenPromedio = margenes.length > 0
       ? margenes.reduce((sum, m) => sum + m.margenPorcentaje, 0) / margenes.length
       : 0
-    const mayorMargen = margenes.reduce((max, m) => m.margen > max.margen ? m : max, margenes[0] || { nombre: 'N/A', margen: 0, margenPorcentaje: 0 })
-    const menorMargen = margenes.reduce((min, m) => m.margen < min.margen ? m : min, margenes[0] || { nombre: 'N/A', margen: 0, margenPorcentaje: 0 })
+    const mayorMargen = margenes.reduce((max, m) => m.margenPorcentaje > max.margenPorcentaje ? m : max, margenes[0] || { nombre: 'N/A', margen: 0, margenPorcentaje: 0 })
+    const menorMargen = margenes.reduce((min, m) => m.margenPorcentaje < min.margenPorcentaje ? m : min, margenes[0] || { nombre: 'N/A', margen: 0, margenPorcentaje: 0 })
 
     const inventarioRiesgo = [...vencidos, ...proximosVencer].reduce((sum, m) => sum + m.precioCompra * m.stock, 0)
 
