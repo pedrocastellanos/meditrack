@@ -99,4 +99,29 @@ describe('useFilter', () => {
     act(() => result.current.setFilter('texto', 'xyz123'))
     expect(result.current.resultados).toHaveLength(0)
   })
+
+  it('filtra por precio mínimo', () => {
+    const { result } = renderHook(() => useFilter(mockMedicamentos))
+    act(() => result.current.setFilter('precioMin', 3000))
+    expect(result.current.resultados).toHaveLength(2)
+    expect(result.current.resultados[0].precioVenta).toBeGreaterThanOrEqual(3000)
+    expect(result.current.resultados[1].precioVenta).toBeGreaterThanOrEqual(3000)
+  })
+
+  it('filtra por precio máximo', () => {
+    const { result } = renderHook(() => useFilter(mockMedicamentos))
+    act(() => result.current.setFilter('precioMax', 3500))
+    expect(result.current.resultados).toHaveLength(2)
+    expect(result.current.resultados.every((m) => m.precioVenta <= 3500)).toBe(true)
+  })
+
+  it('combina precio mínimo y máximo', () => {
+    const { result } = renderHook(() => useFilter(mockMedicamentos))
+    act(() => {
+      result.current.setFilter('precioMin', 2000)
+      result.current.setFilter('precioMax', 4000)
+    })
+    expect(result.current.resultados).toHaveLength(2)
+    expect(result.current.resultados.every((m) => m.precioVenta >= 2000 && m.precioVenta <= 4000)).toBe(true)
+  })
 })

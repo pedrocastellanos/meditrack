@@ -1,8 +1,20 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useReducer, useCallback } from 'react'
 import type { Medicamento, SortField, SortDirection } from '@/data/types'
 import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
-const initialState = {
+interface FilterState {
+  texto: string
+  categoria: string
+  estadoStock: string
+  estadoVencimiento: string
+  requiereReceta: string
+  precioMin: number
+  precioMax: number
+  sortField: SortField
+  sortDirection: SortDirection
+}
+
+const initialFilterState: FilterState = {
   texto: '',
   categoria: '',
   estadoStock: '',
@@ -10,30 +22,38 @@ const initialState = {
   requiereReceta: '',
   precioMin: 0,
   precioMax: Infinity,
-  sortField: 'nombre' as SortField,
-  sortDirection: 'asc' as SortDirection
+  sortField: 'nombre',
+  sortDirection: 'asc'
+}
+
+type FilterAction =
+  | { type: 'SET_FILTER'; key: keyof FilterState; value: FilterState[keyof FilterState] }
+  | { type: 'CLEAR' }
+
+function filterReducer(state: FilterState, action: FilterAction): FilterState {
+  switch (action.type) {
+    case 'SET_FILTER':
+      return { ...state, [action.key]: action.value }
+    case 'CLEAR':
+      return initialFilterState
+    default:
+      return state
+  }
 }
 
 export function useFilter(medicamentos: Medicamento[]) {
-  const [filtros, setFiltros] = useState(initialState)
+  const [filtros, dispatch] = useReducer(filterReducer, initialFilterState)
 
-  // useCallback: estabiliza la referencia de setFilter a través de renders.
-  // Evita que componentes hijos que reciben setFilter como prop se re-rendericen
-  // cuando el padre cambia por razones no relacionadas con los filtros.
-  const setFilter = useCallback(<K extends keyof typeof initialState>(key: K, value: (typeof initialState)[K]) => {
-    setFiltros((prev) => ({ ...prev, [key]: value }))
+  const setFilter = useCallback(<K extends keyof FilterState>(key: K, value: FilterState[K]) => {
+    dispatch({ type: 'SET_FILTER', key, value })
   }, [])
 
-  // useCallback: referencia estable para limpiarFiltros.
-  // Se pasa a componentes de UI (botón limpiar) sin causar re-renderizados por recreación.
   const limpiarFiltros = useCallback(() => {
-    setFiltros(initialState)
+    dispatch({ type: 'CLEAR' })
   }, [])
 
-  // useMemo: el filtrado y ordenamiento son operaciones O(n log n) que se ejecutan
-  // sobre el arreglo completo de medicamentos. Sin memoización, cualquier cambio de estado
-  // ajeno (tema, notificaciones) forzaría un recálculo completo. Se memoiza contra
-  // [medicamentos, filtros] para solo re-ejecutar cuando los datos o los criterios cambian.
+  // useMemo: el filtrado y ordenamiento son operaciones O(n log n). Se memoiza
+  // contra [medicamentos, filtros] para solo re-ejecutar cuando los datos o criterios cambian.
   const resultados = useMemo(() => {
     let items = [...medicamentos]
 

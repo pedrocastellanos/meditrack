@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useMedicamentosStore } from '@/store/medicamentosStore'
 import { useFilter } from '@/hooks/useFilter'
 import { useNotification } from '@/hooks/useNotification'
@@ -13,18 +13,47 @@ import type { SortField } from '@/data/types'
 export default function Inventario() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)
   const eliminarMedicamento = useMedicamentosStore((s) => s.eliminarMedicamento)
-  const { filtros, setFilter, limpiarFiltros, resultados } = useFilter(medicamentos)
+  const { filtros, setFilter, limpiarFiltros, resultados: resultadosBase } = useFilter(medicamentos)
   const { notificaciones, notificar, eliminar } = useNotification()
   const [eliminarId, setEliminarId] = useState<string | null>(null)
+  const [precioMin, setPrecioMin] = useState(0)
+  const [precioMax, setPrecioMax] = useState(Infinity)
+  const [precioMinInput, setPrecioMinInput] = useState('')
+  const [precioMaxInput, setPrecioMaxInput] = useState('')
 
-  // useMemo: evita recalcular el booleano de filtros activos en cada render,
-  // ya que solo depende del objeto filtros y se usa para condicionar la UI (botón limpiar, empty state)
-  const hayFiltrosActivos = useMemo(() =>
-    filtros.texto !== '' || filtros.categoria !== '' || filtros.estadoStock !== '' ||
+  const parsePrecio = (raw: string): number => {
+    if (raw === '') return Infinity
+    const normalizado = raw.replace(/,/g, '.')
+    const num = Number(normalizado)
+    return isNaN(num) || num < 0 ? Infinity : num
+  }
+
+  const handlePrecioMinChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value
+    setPrecioMinInput(raw)
+    setPrecioMin(raw === '' ? 0 : parsePrecio(raw))
+  }, [])
+
+  const handlePrecioMaxChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value
+    setPrecioMaxInput(raw)
+    setPrecioMax(parsePrecio(raw))
+  }, [])
+
+  const resultados = (() => {
+    let items = resultadosBase
+    if (precioMin > 0) {
+      items = items.filter((m) => m.precioVenta >= precioMin)
+    }
+    if (precioMax < Infinity) {
+      items = items.filter((m) => m.precioVenta <= precioMax)
+    }
+    return items
+  })()
+
+  const hayFiltrosActivos = filtros.texto !== '' || filtros.categoria !== '' || filtros.estadoStock !== '' ||
     filtros.estadoVencimiento !== '' || filtros.requiereReceta !== '' ||
-    filtros.precioMin > 0 || filtros.precioMax < Infinity,
-    [filtros]
-  )
+    precioMin > 0 || precioMax < Infinity
 
   // useCallback: estabiliza la referencia de la función pasada a MedicamentoCard,
   // previniendo re-renderizados innecesarios en cada tarjeta del grid al no depender de estado volátil
@@ -41,6 +70,14 @@ export default function Inventario() {
       setEliminarId(null)
     }
   }, [eliminarId, eliminarMedicamento, notificar])
+
+  const handleLimpiarFiltros = useCallback(() => {
+    limpiarFiltros()
+    setPrecioMinInput('')
+    setPrecioMaxInput('')
+    setPrecioMin(0)
+    setPrecioMax(Infinity)
+  }, [limpiarFiltros])
 
   const handleSort = (field: SortField) => {
     if (filtros.sortField === field) {
@@ -127,14 +164,30 @@ export default function Inventario() {
             <option value="true">Con receta</option>
             <option value="false">Sin receta</option>
           </select>
-          <input type="number" placeholder="Precio min" value={filtros.precioMin || ''}
-            onChange={(e) => setFilter('precioMin', Number(e.target.value))}
-            className="w-24 px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-500" />
-          <input type="number" placeholder="Precio max" value={filtros.precioMax === Infinity ? '' : filtros.precioMax}
-            onChange={(e) => setFilter('precioMax', e.target.value ? Number(e.target.value) : Infinity)}
-            className="w-24 px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-500" />
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-gray-400">$</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="Mín"
+              value={precioMinInput}
+              onChange={handlePrecioMinChange}
+              className="w-24 px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-gray-400">$</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="Máx"
+              value={precioMaxInput}
+              onChange={handlePrecioMaxChange}
+              className="w-24 px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
           {hayFiltrosActivos && (
-            <button onClick={limpiarFiltros}
+            <button onClick={handleLimpiarFiltros}
               className="px-3 py-1.5 rounded-lg bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
               Limpiar Filtros
             </button>
@@ -172,7 +225,7 @@ export default function Inventario() {
         <EmptyState
           mensaje="No se encontraron medicamentos con los filtros aplicados"
           accion={hayFiltrosActivos ? 'Limpiar filtros' : 'Ir a registrar'}
-          onAccion={hayFiltrosActivos ? limpiarFiltros : undefined}
+          onAccion={hayFiltrosActivos ? handleLimpiarFiltros : undefined}
           icono={hayFiltrosActivos ? 'search' : 'empty-box'}
         />
       ) : (
