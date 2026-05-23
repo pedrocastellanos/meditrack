@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import { calcularEstadoStock, calcularEstadoVencimiento } from '../utils/validators'
-import { formatDate } from '../utils/formatters'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
+import { formatDate } from '@/utils/formatters'
 import { Link } from 'react-router'
 
 export default function Alertas() {

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router'
-import { useThemeStore } from '../../store/themeStore'
+import { useThemeStore } from '@/store/themeStore'
 
 const links = [
   { to: '/', label: 'Dashboard', icon: '📊' },

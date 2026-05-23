@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
-import { validarNombreUnico, calcularEstadoStock, calcularEstadoVencimiento } from '../utils/validators'
-import type { Medicamento } from '../data/types'
+import { validarNombreUnico, calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
+import type { Medicamento } from '@/data/types'
 
 const mockMedicamentos: Medicamento[] = [
   {

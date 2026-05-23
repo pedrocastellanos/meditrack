@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback } from 'react'
-import type { Medicamento, SortField, SortDirection } from '../data/types'
-import { calcularEstadoStock, calcularEstadoVencimiento } from '../utils/validators'
+import type { Medicamento, SortField, SortDirection } from '@/data/types'
+import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
 const initialState = {
   texto: '',

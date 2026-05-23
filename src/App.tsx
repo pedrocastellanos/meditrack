@@ -1,18 +1,17 @@
 import { useEffect, lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router'
-import { useMedicamentosStore } from './store/medicamentosStore'
-import { useThemeStore } from './store/themeStore'
-import Navbar from './components/layout/Navbar'
-import PageContainer from './components/layout/PageContainer'
-import { Link } from 'react-router'
+import { BrowserRouter, Routes, Route, Link } from 'react-router'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { useThemeStore } from '@/store/themeStore'
+import Navbar from '@/components/layout/Navbar'
+import PageContainer from '@/components/layout/PageContainer'
 
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const Inventario = lazy(() => import('./pages/Inventario'))
-const DetalleMedicamento = lazy(() => import('./pages/DetalleMedicamento'))
-const NuevoMedicamento = lazy(() => import('./pages/NuevoMedicamento'))
-const EditarMedicamento = lazy(() => import('./pages/EditarMedicamento'))
-const Alertas = lazy(() => import('./pages/Alertas'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+const Dashboard = lazy(() => import('@/pages/Dashboard'))
+const Inventario = lazy(() => import('@/pages/Inventario'))
+const DetalleMedicamento = lazy(() => import('@/pages/DetalleMedicamento'))
+const NuevoMedicamento = lazy(() => import('@/pages/NuevoMedicamento'))
+const EditarMedicamento = lazy(() => import('@/pages/EditarMedicamento'))
+const Alertas = lazy(() => import('@/pages/Alertas'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
 
 function LoadingFallback() {
   return (

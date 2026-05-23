@@ -1,10 +1,10 @@
 import { useParams, Link } from 'react-router'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import { formatCurrency } from '../utils/formatters'
-import { calcularEstadoStock, calcularEstadoVencimiento } from '../utils/validators'
-import FormMovimiento from '../components/movimientos/FormMovimiento'
-import HistorialMovimientos from '../components/movimientos/HistorialMovimientos'
-import EmptyState from '../components/ui/EmptyState'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { formatCurrency } from '@/utils/formatters'
+import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
+import FormMovimiento from '@/components/movimientos/FormMovimiento'
+import HistorialMovimientos from '@/components/movimientos/HistorialMovimientos'
+import EmptyState from '@/components/ui/EmptyState'
 
 export default function DetalleMedicamento() {
   const { id } = useParams<{ id: string }>()

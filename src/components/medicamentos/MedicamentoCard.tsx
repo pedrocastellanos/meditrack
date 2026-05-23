@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
-import type { Medicamento } from '../../data/types'
-import { formatCurrency, formatDate } from '../../utils/formatters'
-import { calcularEstadoStock, calcularEstadoVencimiento } from '../../utils/validators'
+import type { Medicamento } from '@/data/types'
+import { formatCurrency, formatDate } from '@/utils/formatters'
+import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
 interface Props {
   medicamento: Medicamento

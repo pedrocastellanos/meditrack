@@ -1,4 +1,4 @@
-import type { Medicamento } from '../data/types'
+import type { Medicamento } from '@/data/types'
 
 export function validarNombreUnico(nombre: string, medicamentos: Medicamento[], excludeId?: string): boolean {
   const nombreLower = nombre.toLowerCase().trim()

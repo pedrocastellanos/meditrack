@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { MOTIVOS_ENTRADA, MOTIVOS_SALIDA } from '../../data/constants'
-import { useMedicamentosStore } from '../../store/medicamentosStore'
-import { useNotification } from '../../hooks/useNotification'
-import ToastContainer from '../notificaciones/ToastContainer'
+import { MOTIVOS_ENTRADA, MOTIVOS_SALIDA } from '@/data/constants'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { useNotification } from '@/hooks/useNotification'
+import ToastContainer from '@/components/notificaciones/ToastContainer'
 
 interface Props {
   medicamentoId: string

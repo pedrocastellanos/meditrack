@@ -1,13 +1,13 @@
 import { useMemo, useState, useCallback } from 'react'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import { useFilter } from '../hooks/useFilter'
-import { useNotification } from '../hooks/useNotification'
-import { CATEGORIAS } from '../data/constants'
-import MedicamentoCard from '../components/medicamentos/MedicamentoCard'
-import EmptyState from '../components/ui/EmptyState'
-import Modal from '../components/ui/Modal'
-import ToastContainer from '../components/notificaciones/ToastContainer'
-import type { SortField } from '../data/types'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { useFilter } from '@/hooks/useFilter'
+import { useNotification } from '@/hooks/useNotification'
+import { CATEGORIAS } from '@/data/constants'
+import MedicamentoCard from '@/components/medicamentos/MedicamentoCard'
+import EmptyState from '@/components/ui/EmptyState'
+import Modal from '@/components/ui/Modal'
+import ToastContainer from '@/components/notificaciones/ToastContainer'
+import type { SortField } from '@/data/types'
 
 export default function Inventario() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)

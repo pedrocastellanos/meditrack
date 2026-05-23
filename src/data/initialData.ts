@@ -1,4 +1,4 @@
-import type { Medicamento } from './types'
+import type { Medicamento } from '@/data/types'
 
 const hoy = new Date()
 const dentroDe = (dias: number) => {

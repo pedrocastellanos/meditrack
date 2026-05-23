@@ -1,5 +1,5 @@
-import type { Movimiento } from '../../data/types'
-import { formatDateTime } from '../../utils/formatters'
+import type { Movimiento } from '@/data/types'
+import { formatDateTime } from '@/utils/formatters'
 
 interface Props {
   movimientos: Movimiento[]

@@ -1,4 +1,4 @@
-import type { Notificacion, TipoNotificacion } from '../../hooks/useNotification'
+import type { Notificacion, TipoNotificacion } from '@/hooks/useNotification'
 
 const coloresMap: Record<TipoNotificacion, string> = {
   exito: 'bg-green-500',

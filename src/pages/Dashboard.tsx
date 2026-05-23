@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import { formatCurrency } from '../utils/formatters'
-import { calcularEstadoStock, calcularEstadoVencimiento } from '../utils/validators'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { formatCurrency } from '@/utils/formatters'
+import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
-import StatsCard from '../components/ui/StatsCard'
+import StatsCard from '@/components/ui/StatsCard'
 
 export default function Dashboard() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)

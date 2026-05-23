@@ -1,10 +1,10 @@
-import { useForm } from '../../hooks/useForm'
+import { useForm } from '@/hooks/useForm'
 import { z } from 'zod'
-import type { Medicamento } from '../../data/types'
-import { CATEGORIAS, PRESENTACIONES } from '../../data/constants'
-import { useMedicamentosStore } from '../../store/medicamentosStore'
-import { useNotification } from '../../hooks/useNotification'
-import ToastContainer from '../notificaciones/ToastContainer'
+import type { Medicamento } from '@/data/types'
+import { CATEGORIAS, PRESENTACIONES } from '@/data/constants'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import { useNotification } from '@/hooks/useNotification'
+import ToastContainer from '@/components/notificaciones/ToastContainer'
 
 const formSchema = z.object({
   nombre: z.string().min(3, 'Mínimo 3 caracteres'),

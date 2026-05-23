@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import HistorialMovimientos from '../components/movimientos/HistorialMovimientos'
-import type { Movimiento } from '../data/types'
-import Modal from '../components/ui/Modal'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import HistorialMovimientos from '@/components/movimientos/HistorialMovimientos'
+import type { Movimiento } from '@/data/types'
+import Modal from '@/components/ui/Modal'
 
 const mockMovimientos: Movimiento[] = [
   { id: 'm1', tipo: 'entrada', cantidad: 20, motivo: 'Compra a proveedor', fecha: '2025-01-01T10:00', stockResultante: 20 },

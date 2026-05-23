@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Medicamento, Movimiento, MedicamentoFormData } from '../data/types'
-import { medicamentosIniciales } from '../data/initialData'
-import { generarId, generarIdMovimiento } from '../utils/formatters'
+import type { Medicamento, Movimiento, MedicamentoFormData } from '@/data/types'
+import { medicamentosIniciales } from '@/data/initialData'
+import { generarId, generarIdMovimiento } from '@/utils/formatters'
 
 interface MedicamentosState {
   medicamentos: Medicamento[]

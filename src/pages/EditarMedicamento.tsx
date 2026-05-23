@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router'
-import { useMedicamentosStore } from '../store/medicamentosStore'
-import MedicamentoForm from '../components/medicamentos/MedicamentoForm'
-import EmptyState from '../components/ui/EmptyState'
+import { useMedicamentosStore } from '@/store/medicamentosStore'
+import MedicamentoForm from '@/components/medicamentos/MedicamentoForm'
+import EmptyState from '@/components/ui/EmptyState'
 
 export default function EditarMedicamento() {
   const { id } = useParams<{ id: string }>()

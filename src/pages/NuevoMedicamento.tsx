@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router'
-import MedicamentoForm from '../components/medicamentos/MedicamentoForm'
+import MedicamentoForm from '@/components/medicamentos/MedicamentoForm'
 
 export default function NuevoMedicamento() {
   const navigate = useNavigate()
