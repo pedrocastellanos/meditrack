@@ -16,6 +16,8 @@ export default function Inventario() {
   const { notificaciones, notificar, eliminar } = useNotification()
   const [eliminarId, setEliminarId] = useState<string | null>(null)
 
+  // useMemo: evita recalcular el booleano de filtros activos en cada render,
+  // ya que solo depende del objeto filtros y se usa para condicionar la UI (botón limpiar, empty state)
   const hayFiltrosActivos = useMemo(() =>
     filtros.texto !== '' || filtros.categoria !== '' || filtros.estadoStock !== '' ||
     filtros.estadoVencimiento !== '' || filtros.requiereReceta !== '' ||
@@ -23,10 +25,14 @@ export default function Inventario() {
     [filtros]
   )
 
+  // useCallback: estabiliza la referencia de la función pasada a MedicamentoCard,
+  // previniendo re-renderizados innecesarios en cada tarjeta del grid al no depender de estado volátil
   const handleDelete = useCallback((id: string) => {
     setEliminarId(id)
   }, [])
 
+  // useCallback: la dependencia eliminarId cambia al abrir/cerrar el modal;
+  // estabilizar esta función evita que el Modal se re-renderice en cada cambio de filtros o resultados
   const confirmarEliminar = useCallback(() => {
     if (eliminarId) {
       eliminarMedicamento(eliminarId)
@@ -44,13 +50,22 @@ export default function Inventario() {
     }
   }
 
+  // useCallback: estabiliza la función exportCSV que se pasa como handler del botón.
+  // Depende de resultados (que ya usa useMemo internamente), evitando recreaciones en renders sin cambios
   const exportCSV = useCallback(() => {
+    const escaparCSV = (val: string | number | boolean): string => {
+      const str = String(val)
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`
+      }
+      return str
+    }
     const headers = ['Nombre', 'Principio Activo', 'Categoría', 'Presentación', 'Laboratorio',
       'Precio Compra', 'Precio Venta', 'Stock', 'Stock Mínimo', 'Vencimiento', 'Lote', 'Receta', 'Ubicación']
     const rows = resultados.map((m) => [
-      m.nombre, m.principioActivo, m.categoria, m.presentacion, m.laboratorio,
-      m.precioCompra, m.precioVenta, m.stock, m.stockMinimo,
-      m.fechaVencimiento, m.lote, m.requiereReceta ? 'Sí' : 'No', m.ubicacion
+      escaparCSV(m.nombre), escaparCSV(m.principioActivo), escaparCSV(m.categoria), escaparCSV(m.presentacion), escaparCSV(m.laboratorio),
+      escaparCSV(m.precioCompra), escaparCSV(m.precioVenta), escaparCSV(m.stock), escaparCSV(m.stockMinimo),
+      escaparCSV(m.fechaVencimiento), escaparCSV(m.lote), escaparCSV(m.requiereReceta ? 'Sí' : 'No'), escaparCSV(m.ubicacion)
     ])
     const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -127,7 +142,7 @@ export default function Inventario() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mb-4 text-xs text-gray-500 dark:text-gray-400">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-4 text-xs text-gray-500 dark:text-gray-400">
         <button onClick={() => handleSort('nombre')} className="text-left hover:text-blue-600 dark:hover:text-blue-400">
           Nombre{sortIndicator('nombre')}
         </button>
@@ -139,6 +154,9 @@ export default function Inventario() {
         </button>
         <button onClick={() => handleSort('fechaVencimiento')} className="text-left hover:text-blue-600 dark:hover:text-blue-400">
           Vencimiento{sortIndicator('fechaVencimiento')}
+        </button>
+        <button onClick={() => handleSort('fechaRegistro')} className="text-left hover:text-blue-600 dark:hover:text-blue-400">
+          Registro{sortIndicator('fechaRegistro')}
         </button>
       </div>
 
