@@ -17,14 +17,23 @@ const initialState = {
 export function useFilter(medicamentos: Medicamento[]) {
   const [filtros, setFiltros] = useState(initialState)
 
+  // useCallback: estabiliza la referencia de setFilter a través de renders.
+  // Evita que componentes hijos que reciben setFilter como prop se re-rendericen
+  // cuando el padre cambia por razones no relacionadas con los filtros.
   const setFilter = useCallback(<K extends keyof typeof initialState>(key: K, value: (typeof initialState)[K]) => {
     setFiltros((prev) => ({ ...prev, [key]: value }))
   }, [])
 
+  // useCallback: referencia estable para limpiarFiltros.
+  // Se pasa a componentes de UI (botón limpiar) sin causar re-renderizados por recreación.
   const limpiarFiltros = useCallback(() => {
     setFiltros(initialState)
   }, [])
 
+  // useMemo: el filtrado y ordenamiento son operaciones O(n log n) que se ejecutan
+  // sobre el arreglo completo de medicamentos. Sin memoización, cualquier cambio de estado
+  // ajeno (tema, notificaciones) forzaría un recálculo completo. Se memoiza contra
+  // [medicamentos, filtros] para solo re-ejecutar cuando los datos o los criterios cambian.
   const resultados = useMemo(() => {
     let items = [...medicamentos]
 

@@ -9,6 +9,11 @@ import StatsCard from '../components/ui/StatsCard'
 export default function Dashboard() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)
 
+  // useMemo: todos los cálculos estadísticos (reduces, filtros, sorts) se agrupan aquí.
+  // Sin useMemo, estos se re-ejecutarían en cada render del Dashboard incluso si los datos
+  // del inventario no cambiaron (por ejemplo, al cambiar de tema o al navegar). Dado que
+  // son operaciones O(n) sobre el arreglo completo de medicamentos, memoizar evita
+  // recomputaciones costosas en renders no relacionados con cambios de datos.
   const stats = useMemo(() => {
     const totalMedicamentos = medicamentos.length
     const totalUnidades = medicamentos.reduce((sum, m) => sum + m.stock, 0)
