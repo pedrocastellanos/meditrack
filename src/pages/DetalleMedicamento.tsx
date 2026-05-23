@@ -15,7 +15,7 @@ export default function DetalleMedicamento() {
       <EmptyState
         mensaje="Medicamento no encontrado"
         accion="Volver al inventario"
-        icono="🔍"
+        icono="search"
       />
     )
   }
@@ -35,15 +35,15 @@ export default function DetalleMedicamento() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <Link to="/inventario" className="text-sm text-blue-600 dark:text-blue-400 hover:underline mb-1 block">
+          <Link to="/inventario" className="text-sm text-teal-600 dark:text-teal-400 hover:underline mb-1 block font-medium">
             ← Volver al inventario
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{medicamento.nombre}</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white font-[family-name:var(--font-headline)]">{medicamento.nombre}</h1>
           <p className="text-gray-500 dark:text-gray-400">{medicamento.principioActivo}</p>
         </div>
         <Link
           to={`/inventario/${medicamento.id}/editar`}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm text-center"
+          className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm text-center shadow-sm hover:shadow-md"
         >
           Editar Medicamento
         </Link>

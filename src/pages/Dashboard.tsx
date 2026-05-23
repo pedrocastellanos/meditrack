@@ -5,6 +5,7 @@ import { formatCurrency } from '@/utils/formatters'
 import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
 import StatsCard from '@/components/ui/StatsCard'
+import Icon from '@/components/ui/Icon'
 import DistribucionCategorias from '@/components/estadisticas/DistribucionCategorias'
 import AnalisisFinanciero from '@/components/estadisticas/AnalisisFinanciero'
 
@@ -67,24 +68,24 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard titulo="Total Medicamentos" valor={stats.totalMedicamentos} icono="💊" color="blue" />
-        <StatsCard titulo="Unidades en Almacén" valor={stats.totalUnidades} icono="📦" color="green" />
-        <StatsCard titulo="Valor (Compra)" valor={formatCurrency(stats.valorCompra)} icono="💰" color="purple" />
-        <StatsCard titulo="Valor (Venta)" valor={formatCurrency(stats.valorVenta)} icono="🏷️" color="blue" />
+        <StatsCard titulo="Total Medicamentos" valor={stats.totalMedicamentos} icono={<Icon name="pill" className="w-5 h-5" />} color="teal" />
+        <StatsCard titulo="Unidades en Almacén" valor={stats.totalUnidades} icono={<Icon name="box" className="w-5 h-5" />} color="green" />
+        <StatsCard titulo="Valor (Compra)" valor={formatCurrency(stats.valorCompra)} icono={<Icon name="dollar" className="w-5 h-5" />} color="purple" />
+        <StatsCard titulo="Valor (Venta)" valor={formatCurrency(stats.valorVenta)} icono={<Icon name="tag" className="w-5 h-5" />} color="teal" />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link to="/alertas" className="block">
-          <StatsCard titulo="Stock Bajo" valor={stats.stockBajo} icono="⚠️" color="yellow" />
+          <StatsCard titulo="Stock Bajo" valor={stats.stockBajo} icono={<Icon name="warning" className="w-5 h-5" />} color="yellow" />
         </Link>
         <Link to="/alertas" className="block">
-          <StatsCard titulo="Agotados" valor={stats.agotados} icono="🚫" color="red" />
+          <StatsCard titulo="Agotados" valor={stats.agotados} icono={<Icon name="x-circle" className="w-5 h-5" />} color="red" />
         </Link>
         <Link to="/alertas" className="block">
-          <StatsCard titulo="Vencidos" valor={stats.vencidos} icono="🗑️" color="red" />
+          <StatsCard titulo="Vencidos" valor={stats.vencidos} icono={<Icon name="trash" className="w-5 h-5" />} color="red" />
         </Link>
         <Link to="/alertas" className="block">
-          <StatsCard titulo="Próximos a Vencer" valor={stats.proximosVencer} icono="⏰" color="yellow" />
+          <StatsCard titulo="Próximos a Vencer" valor={stats.proximosVencer} icono={<Icon name="clock" className="w-5 h-5" />} color="yellow" />
         </Link>
       </div>
 

@@ -8,7 +8,7 @@ export default function NotFound() {
       <p className="text-gray-500 dark:text-gray-400 mb-6">La página que buscas no existe o ha sido movida.</p>
       <Link
         to="/"
-        className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+        className="px-6 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium shadow-sm hover:shadow-md"
       >
         Volver al Dashboard
       </Link>

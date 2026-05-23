@@ -16,7 +16,7 @@ const NotFound = lazy(() => import('@/pages/NotFound'))
 function LoadingFallback() {
   return (
     <div className="flex items-center justify-center py-20">
-      <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent" />
+      <div className="animate-spin rounded-full h-10 w-10 border-4 border-teal-500 border-t-transparent" />
     </div>
   )
 }
@@ -35,7 +35,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-white dark:bg-gray-950 dark:from-gray-950 dark:to-gray-900 transition-colors duration-300">
         <Navbar />
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
@@ -46,7 +46,7 @@ export default function App() {
                 action={
                   <Link
                     to="/inventario/nuevo"
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    className="inline-block px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium shadow-sm hover:shadow-md"
                   >
                     + Nuevo Medicamento
                   </Link>
@@ -59,7 +59,7 @@ export default function App() {
               <PageContainer
                 title="Registrar Medicamento"
                 action={
-                  <Link to="/inventario" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                  <Link to="/inventario" className="text-sm text-teal-600 dark:text-teal-400 hover:underline font-medium">
                     ← Volver
                   </Link>
                 }
@@ -72,7 +72,7 @@ export default function App() {
               <PageContainer
                 title="Editar Medicamento"
                 action={
-                  <Link to="/inventario" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                  <Link to="/inventario" className="text-sm text-teal-600 dark:text-teal-400 hover:underline font-medium">
                     ← Volver
                   </Link>
                 }

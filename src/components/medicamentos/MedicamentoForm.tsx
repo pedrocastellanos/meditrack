@@ -120,7 +120,7 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
     `w-full px-3 py-2 rounded-lg border text-sm transition-colors ${
       hasError
         ? 'border-red-500 focus:ring-red-500'
-        : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500'
+        : 'border-gray-300 dark:border-gray-600 focus:ring-teal-500'
     } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2`
 
   return (
@@ -209,7 +209,7 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
               {errors.fechaVencimiento && <p className="text-red-500 text-xs mt-1">{errors.fechaVencimiento.message}</p>}
             </div>
             <div className="flex items-center gap-2 pt-6">
-              <input type="checkbox" id="requiereReceta" {...register('requiereReceta')} className="w-4 h-4 rounded border-gray-300 text-blue-600" />
+              <input type="checkbox" id="requiereReceta" {...register('requiereReceta')} className="w-4 h-4 rounded border-gray-300 text-teal-600" />
               <label htmlFor="requiereReceta" className="text-sm text-gray-700 dark:text-gray-300">Requiere receta médica</label>
             </div>
           </div>
@@ -229,7 +229,7 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
           <button
             type="submit"
             disabled={!isValid}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            className="px-6 py-2.5 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-sm hover:shadow-md"
           >
             {medicamento ? 'Actualizar Medicamento' : 'Registrar Medicamento'}
           </button>

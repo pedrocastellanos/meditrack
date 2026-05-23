@@ -13,7 +13,7 @@ export default function EditarMedicamento() {
       <EmptyState
         mensaje="Medicamento no encontrado"
         accion="Volver al inventario"
-        icono="🔍"
+        icono="search"
       />
     )
   }

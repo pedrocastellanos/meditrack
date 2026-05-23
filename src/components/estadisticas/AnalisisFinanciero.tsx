@@ -27,7 +27,7 @@ export default function AnalisisFinanciero({
 }: Props) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Análisis Financiero</h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 font-[family-name:var(--font-headline)]">Análisis Financiero</h2>
       <div className="space-y-3">
         <div className="flex justify-between text-sm">
           <span className="text-gray-500 dark:text-gray-400">Margen de ganancia promedio</span>

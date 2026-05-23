@@ -3,6 +3,8 @@ import { useMedicamentosStore } from '@/store/medicamentosStore'
 import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 import { formatDate } from '@/utils/formatters'
 import { Link } from 'react-router'
+import Icon from '@/components/ui/Icon'
+import type { IconName } from '@/components/ui/Icon'
 
 export default function Alertas() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)
@@ -16,11 +18,11 @@ export default function Alertas() {
     return { stockBajo, agotados, vencidos, proximosVencer }
   }, [medicamentos])
 
-  const secciones = [
-    { titulo: 'Stock Bajo', items: alertas.stockBajo, color: 'yellow', icono: '⚠️' },
-    { titulo: 'Agotados', items: alertas.agotados, color: 'red', icono: '🚫' },
-    { titulo: 'Vencidos', items: alertas.vencidos, color: 'red', icono: '🗑️' },
-    { titulo: 'Próximos a Vencer', items: alertas.proximosVencer, color: 'yellow', icono: '⏰' }
+  const secciones: { titulo: string; items: typeof alertas.stockBajo; icono: IconName }[] = [
+    { titulo: 'Stock Bajo', items: alertas.stockBajo, icono: 'warning' },
+    { titulo: 'Agotados', items: alertas.agotados, icono: 'x-circle' },
+    { titulo: 'Vencidos', items: alertas.vencidos, icono: 'trash' },
+    { titulo: 'Próximos a Vencer', items: alertas.proximosVencer, icono: 'clock' }
   ]
 
   const totalAlertas = secciones.reduce((s, sec) => s + sec.items.length, 0)
@@ -28,8 +30,10 @@ export default function Alertas() {
   if (totalAlertas === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <span className="text-6xl mb-4">✅</span>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">No hay alertas activas. ¡Todo en orden!</p>
+        <div className="w-20 h-20 rounded-full bg-green-50 dark:bg-green-950/30 flex items-center justify-center mb-4">
+          <Icon name="check" className="w-10 h-10 text-green-500" />
+        </div>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">No hay alertas activas. Todo en orden.</p>
       </div>
     )
   }
@@ -38,8 +42,8 @@ export default function Alertas() {
     <div className="space-y-8">
       {secciones.filter((s) => s.items.length > 0).map((seccion) => (
         <div key={seccion.titulo}>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-            <span>{seccion.icono}</span>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2 font-[family-name:var(--font-headline)]">
+            <Icon name={seccion.icono} className="w-5 h-5" />
             {seccion.titulo}
             <span className="text-sm font-normal text-gray-500">({seccion.items.length})</span>
           </h2>

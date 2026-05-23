@@ -78,7 +78,7 @@ export default function FormMovimiento({ medicamentoId, stockActual, onSuccess }
             min={1}
             value={cantidad}
             onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
 
@@ -87,7 +87,7 @@ export default function FormMovimiento({ medicamentoId, stockActual, onSuccess }
           <select
             value={motivo}
             onChange={(e) => setMotivo(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
           >
             {(tipo === 'entrada' ? MOTIVOS_ENTRADA : MOTIVOS_SALIDA).map((m) => (
               <option key={m} value={m}>{m}</option>
