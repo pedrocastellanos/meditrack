@@ -1,24 +1,20 @@
-import { useForm as useRHF, type UseFormProps } from 'react-hook-form'
+import { useForm as useRHF } from 'react-hook-form'
+import type { FieldValues, UseFormProps } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { ZodType } from 'zod'
 
 /**
- * Custom hook que abstrae la integración de React Hook Form con Zod.
- *
- * Centraliza la configuración de validación en tiempo real (mode: 'onChange')
- * y el resolver de Zod, evitando repetir esta configuración en cada formulario.
- * Permite que cualquier componente de formulario consuma validación tipada
- * sin acoplarse a los detalles de implementación de RHF + Zod.
+ * @param schema  Esquema Zod que define la forma y validaciones del formulario
+ * @param defaultValues  Valores iniciales tipados según el esquema
  */
-export function useForm<T extends Record<string, unknown>>(
-  schema: ZodType<T>,
-  defaultValues: T,
-  options?: Omit<UseFormProps<T>, 'resolver' | 'defaultValues'>
+export function useForm<TFieldValues extends FieldValues>(
+  schema: Parameters<typeof zodResolver>[0],
+  defaultValues: TFieldValues
 ) {
-  return useRHF<T>({
-    mode: 'onChange',
+  const options = {
+    mode: 'onChange' as const,
     resolver: zodResolver(schema),
     defaultValues,
-    ...options,
-  })
+  }
+
+  return useRHF<TFieldValues>(options as UseFormProps<TFieldValues>)
 }

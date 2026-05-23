@@ -23,7 +23,7 @@ const formSchema = z.object({
   notas: z.string().optional()
 })
 
-type FormData = z.infer<typeof formSchema>
+type MedicamentoFormValues = z.infer<typeof formSchema>
 
 const getSchema = (medicamentos: Medicamento[], excludeId?: string) =>
   formSchema.refine(
@@ -54,50 +54,52 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
   const { medicamentos, agregarMedicamento, actualizarMedicamento } = useMedicamentosStore()
   const { notificaciones, notificar, eliminar } = useNotification()
 
+  const defaultValues: MedicamentoFormValues = medicamento ? {
+    nombre: medicamento.nombre,
+    principioActivo: medicamento.principioActivo,
+    categoria: medicamento.categoria,
+    presentacion: medicamento.presentacion,
+    laboratorio: medicamento.laboratorio,
+    precioCompra: medicamento.precioCompra,
+    precioVenta: medicamento.precioVenta,
+    stock: medicamento.stock,
+    stockMinimo: medicamento.stockMinimo,
+    fechaVencimiento: medicamento.fechaVencimiento,
+    lote: medicamento.lote,
+    requiereReceta: medicamento.requiereReceta,
+    ubicacion: medicamento.ubicacion,
+    notas: medicamento.notas
+  } : {
+    nombre: '',
+    principioActivo: '',
+    categoria: '',
+    presentacion: '',
+    laboratorio: '',
+    precioCompra: 0,
+    precioVenta: 0,
+    stock: 0,
+    stockMinimo: 5,
+    fechaVencimiento: '',
+    lote: '',
+    requiereReceta: false,
+    ubicacion: '',
+    notas: ''
+  }
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
     formState: { errors, isValid }
-  } = useForm<FormData>(
+  } = useForm(
     getSchema(medicamentos, medicamento?.id),
-    medicamento ? {
-      nombre: medicamento.nombre,
-      principioActivo: medicamento.principioActivo,
-      categoria: medicamento.categoria,
-      presentacion: medicamento.presentacion,
-      laboratorio: medicamento.laboratorio,
-      precioCompra: medicamento.precioCompra,
-      precioVenta: medicamento.precioVenta,
-      stock: medicamento.stock,
-      stockMinimo: medicamento.stockMinimo,
-      fechaVencimiento: medicamento.fechaVencimiento,
-      lote: medicamento.lote,
-      requiereReceta: medicamento.requiereReceta,
-      ubicacion: medicamento.ubicacion,
-      notas: medicamento.notas
-    } : {
-      nombre: '',
-      principioActivo: '',
-      categoria: '',
-      presentacion: '',
-      laboratorio: '',
-      precioCompra: 0,
-      precioVenta: 0,
-      stock: 0,
-      stockMinimo: 5,
-      fechaVencimiento: '',
-      lote: '',
-      requiereReceta: false,
-      ubicacion: '',
-      notas: ''
-    }
-  })
+    defaultValues
+  )
 
   const stockValue = watch('stock')
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: MedicamentoFormValues) => {
     const formData = {
       ...data,
       ubicacion: data.ubicacion || '',
