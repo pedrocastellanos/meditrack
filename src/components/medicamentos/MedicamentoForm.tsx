@@ -1,5 +1,4 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from '../../hooks/useForm'
 import { z } from 'zod'
 import type { Medicamento } from '../../data/types'
 import { CATEGORIAS, PRESENTACIONES } from '../../data/constants'
@@ -61,10 +60,9 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
     reset,
     watch,
     formState: { errors, isValid }
-  } = useForm<FormData>({
-    mode: 'onChange',
-    resolver: zodResolver(getSchema(medicamentos, medicamento?.id)),
-    defaultValues: medicamento ? {
+  } = useForm<FormData>(
+    getSchema(medicamentos, medicamento?.id),
+    medicamento ? {
       nombre: medicamento.nombre,
       principioActivo: medicamento.principioActivo,
       categoria: medicamento.categoria,
