@@ -49,6 +49,7 @@ export default function MedicamentoCard({ medicamento, onDelete }: Props) {
       <div className="flex flex-wrap gap-1.5 mb-3">
         <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">{medicamento.categoria}</span>
         <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">{medicamento.presentacion}</span>
+        <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">{medicamento.laboratorio}</span>
       </div>
 
       <div className="grid grid-cols-2 gap-2 text-sm mb-3">
