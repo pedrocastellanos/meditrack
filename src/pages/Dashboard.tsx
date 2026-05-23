@@ -5,6 +5,8 @@ import { formatCurrency } from '@/utils/formatters'
 import { calcularEstadoStock, calcularEstadoVencimiento } from '@/utils/validators'
 
 import StatsCard from '@/components/ui/StatsCard'
+import DistribucionCategorias from '@/components/estadisticas/DistribucionCategorias'
+import AnalisisFinanciero from '@/components/estadisticas/AnalisisFinanciero'
 
 export default function Dashboard() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)
@@ -87,66 +89,20 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Distribución por Categoría</h2>
-          {stats.conteoCategorias.length === 0 ? (
-            <p className="text-gray-500 text-sm">Sin datos</p>
-          ) : (
-            <div className="space-y-2">
-              {stats.conteoCategorias.map(([cat, count]) => (
-                <div key={cat} className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-300 w-40 truncate">{cat}</span>
-                  <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-3">
-                    <div
-                      className="bg-blue-500 h-3 rounded-full transition-all"
-                      style={{ width: `${(count / stats.totalMedicamentos) * 100}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white w-8 text-right">{count}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <DistribucionCategorias
+          conteoCategorias={stats.conteoCategorias}
+          totalMedicamentos={stats.totalMedicamentos}
+        />
 
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Análisis Financiero</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500 dark:text-gray-400">Margen de ganancia promedio</span>
-              <span className="font-semibold text-gray-900 dark:text-white">{stats.margenPromedio.toFixed(1)}%</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500 dark:text-gray-400">Mayor margen</span>
-              <span className="font-semibold text-green-600">{stats.mayorMargen.nombre} ({stats.mayorMargen.margenPorcentaje.toFixed(0)}%)</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500 dark:text-gray-400">Menor margen</span>
-              <span className="font-semibold text-red-600">{stats.menorMargen.nombre} ({stats.menorMargen.margenPorcentaje.toFixed(0)}%)</span>
-            </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500 dark:text-gray-400">Categoría más poblada</span>
-                <span className="font-semibold text-gray-900 dark:text-white">{stats.categoriaMasPoblada}</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="text-gray-500 dark:text-gray-400">Categoría mayor valor</span>
-                <span className="font-semibold text-gray-900 dark:text-white">{stats.categoriaMayorValor}</span>
-              </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="text-gray-500 dark:text-gray-400">Requieren receta</span>
-                <span className="font-semibold text-gray-900 dark:text-white">{stats.porcentajeReceta}%</span>
-              </div>
-            </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-red-500 font-medium">Inventario en riesgo</span>
-                <span className="font-semibold text-red-600">{formatCurrency(stats.inventarioRiesgo)}</span>
-              </div>
-              <p className="text-xs text-gray-400 mt-1">Valor de compra de productos vencidos o próximos a vencer</p>
-            </div>
-          </div>
-        </div>
+        <AnalisisFinanciero
+          margenPromedio={stats.margenPromedio}
+          mayorMargen={stats.mayorMargen}
+          menorMargen={stats.menorMargen}
+          categoriaMasPoblada={stats.categoriaMasPoblada}
+          categoriaMayorValor={stats.categoriaMayorValor}
+          porcentajeReceta={stats.porcentajeReceta}
+          inventarioRiesgo={stats.inventarioRiesgo}
+        />
       </div>
     </div>
   )
