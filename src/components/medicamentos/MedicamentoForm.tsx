@@ -169,12 +169,12 @@ export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props)
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Precio de Compra ($)</label>
-              <input type="number" {...register('precioCompra', { valueAsNumber: true })} className={inputClass(!!errors.precioCompra)} />
+              <input type="number" step="any" {...register('precioCompra', { valueAsNumber: true })} className={inputClass(!!errors.precioCompra)} />
               {errors.precioCompra && <p className="text-red-500 text-xs mt-1">{errors.precioCompra.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Precio de Venta ($)</label>
-              <input type="number" {...register('precioVenta', { valueAsNumber: true })} className={inputClass(!!errors.precioVenta)} />
+              <input type="number" step="any" {...register('precioVenta', { valueAsNumber: true })} className={inputClass(!!errors.precioVenta)} />
               {errors.precioVenta && <p className="text-red-500 text-xs mt-1">{errors.precioVenta.message}</p>}
             </div>
             <div className="md:col-span-2">
