@@ -32,6 +32,10 @@ export default function MedicamentoCard({ medicamento, onDelete }: Props) {
     ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
     : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
 
+  const margen = medicamento.precioCompra > 0
+    ? ((medicamento.precioVenta - medicamento.precioCompra) / medicamento.precioCompra) * 100
+    : 0
+
   return (
     <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${cardClass} card-enter`}>
       <div className="flex items-start justify-between mb-3">
@@ -74,9 +78,22 @@ export default function MedicamentoCard({ medicamento, onDelete }: Props) {
         </span>
       </div>
 
-      <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
-        <span className="text-xs text-gray-400">Vence: {formatDate(medicamento.fechaVencimiento)}</span>
-        <div className="flex gap-2">
+      <div className="pt-2 border-t border-gray-100 dark:border-gray-700 space-y-3">
+        <div className="grid grid-cols-3 gap-1 text-xs">
+          <div>
+            <span className="text-gray-400">Vence</span>
+            <p className="text-gray-600 dark:text-gray-300">{formatDate(medicamento.fechaVencimiento)}</p>
+          </div>
+          <div>
+            <span className="text-gray-400">Registro</span>
+            <p className="text-gray-600 dark:text-gray-300">{formatDate(medicamento.fechaRegistro)}</p>
+          </div>
+          <div>
+            <span className="text-gray-400">Margen</span>
+            <p className="text-green-600 dark:text-green-400 font-medium">{margen.toFixed(0)}%</p>
+          </div>
+        </div>
+        <div className="flex justify-end gap-2">
           <Link
             to={`/inventario/${medicamento.id}/editar`}
             className="text-xs text-teal-600 dark:text-teal-400 hover:underline font-medium"
