@@ -1,75 +1,95 @@
-# React + TypeScript + Vite
+# MediTrack — Sistema de Control de Inventario para Farmacia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web SPA para la gestión integral de inventario de medicamentos en farmacias de barrio. Resuelve problemas de medicamentos vencidos, stock no controlado, compras duplicadas y falta de visibilidad del inventario mediante una interfaz moderna, responsive y eficiente.
 
-Currently, two official plugins are available:
+## Capturas de Pantalla
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Dashboard (`/`)
+![Dashboard](./screenshots/dashboard.png)
 
-## React Compiler
+### Catálogo de Inventario (`/inventario`)
+![Inventario](./screenshots/inventario.png) 
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Vista de Detalle (`/inventario/:id`)
+![Detalle](./screenshots/detalles.png)
 
-Note: This will impact Vite dev & build performances.
+## Tecnologías Utilizadas
 
-## Expanding the ESLint configuration
+| Tecnología                         |
+| ---------------------------------- |
+| **Vite**                           |
+| **React 19**                       |
+| **TypeScript**                     |
+| **React Router**                   |
+| **Zustand**                        |
+| **React Hook Form + Zod**          |
+| **Tailwind CSS v4**                |
+| **Vitest + React Testing Library** |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Guía de Instalación y Ejecución
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Clonar el repositorio
+git clone https://github.com/pedrocastellanos/meditrack.git
+cd meditrack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Instalar dependencias
+npm install
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Ejecutar en modo desarrollo
+npm run dev
+
+# Ejecutar pruebas
+npm test
+
+# Construir para producción
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Estructura del Proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+meditrack/
+├── src/
+│   ├── components/
+│   │   ├── ui/              # Componentes genéricos (Modal, EmptyState, StatsCard)
+│   │   ├── medicamentos/    # Formulario y tarjetas de medicamentos
+│   │   ├── movimientos/     # Formulario de movimientos e historial
+│   │   ├── notificaciones/  # Sistema de toasts
+│   │   └── layout/          # Navbar, PageContainer
+│   ├── pages/               # Vistas principales (Dashboard, Inventario, Detalle, Alertas, 404)
+│   ├── store/               # Stores de Zustand (medicamentos, tema)
+│   ├── hooks/               # Custom hooks (useFilter, useNotification)
+│   ├── data/                # Seed data, constantes del dominio, tipos
+│   ├── utils/               # Formateadores y validadores
+│   └── __tests__/           # Pruebas unitarias
+```
+
+## Decisiones Técnicas
+
+1. **Zustand sobre Context API + useReducer**: Se eligió Zustand por su simplicidad, menor boilerplate, middleware de persistencia integrado y rendimiento superior al evitar re-renderizados innecesarios mediante suscripciones selectivas.
+
+2. **React Hook Form + Zod sobre validación manual**: La combinación RHF + Zod proporciona validación en tiempo real con tipado inferido automáticamente, reduciendo errores y mejorando la experiencia de desarrollo al unificar esquemas de validación y tipos.
+
+3. **Persistencia en localStorage**: Se implementó mediante el middleware `persist` de Zustand, abstrayendo completamente la lógica de almacenamiento de los componentes. Los cambios de estado se sincronizan automáticamente sin que las vistas interactúen directamente con el storage del navegador.
+
+4. **Lazy loading con React.lazy y Suspense**: Cada página se carga bajo demanda, reduciendo el bundle inicial drásticamente. Los fallbacks con spinner animado mejoran la percepción de rendimiento.
+
+5. **useMemo y useCallback para optimización**: Los cálculos estadísticos del Dashboard se envuelven en useMemo para evitar recomputaciones en cada render. Las funciones de mutación (create, update, delete) usan useCallback al pasarse a componentes hijos para prevenir re-renderizados innecesarios del DOM.
+
+## Custom Hooks Desarrollados
+
+### `useForm`
+- **Propósito:** Abstraer la integración de React Hook Form + Zod, centralizando la configuración de validación en tiempo real (`mode: 'onChange'`) y el resolver de esquemas. Permite que cualquier formulario del sistema consuma validación tipada sin repetir boilerplate.
+- **Parámetros:** `schema: ZodType`, `defaultValues: TFieldValues`
+- **Retorno:** Objeto completo de `useForm` de React Hook Form (`register`, `handleSubmit`, `reset`, `watch`, `formState`, etc.)
+
+### `useFilter`
+- **Propósito**: Encapsular la lógica de búsqueda por texto, filtros combinados (categoría, stock, vencimiento, receta, precio) y ordenamiento dinámico.
+- **Parámetros**: `medicamentos: Medicamento[]`
+- **Retorno**: `{ filtros, setFilter, limpiarFiltros, resultados }`
+
+### `useNotification`
+- **Propósito**: Controlador imperativo de notificaciones toast con auto-destrucción temporizada.
+- **Parámetros**: Ninguno
+- **Retorno**: `{ notificaciones, notificar, eliminar, colores }`
