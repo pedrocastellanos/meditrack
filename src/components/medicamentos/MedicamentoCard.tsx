@@ -46,7 +46,7 @@ export default function MedicamentoCard({ medicamento, onDelete }: Props) {
           <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{medicamento.principioActivo}</p>
         </div>
         {medicamento.requiereReceta && (
-          <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded font-medium shrink-0">Rx</span>
+          <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded font-medium shrink-0">Receta</span>
         )}
       </div>
 
