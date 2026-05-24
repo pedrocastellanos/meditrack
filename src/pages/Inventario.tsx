@@ -9,6 +9,7 @@ import Modal from '@/components/ui/Modal'
 import Icon from '@/components/ui/Icon'
 import ToastContainer from '@/components/notificaciones/ToastContainer'
 import type { SortField } from '@/data/types'
+import { escaparCSV } from '@/utils/escaparCsV'
 
 export default function Inventario() {
   const medicamentos = useMedicamentosStore((s) => s.medicamentos)
@@ -91,22 +92,22 @@ export default function Inventario() {
   // useCallback: estabiliza la función exportCSV que se pasa como handler del botón.
   // Depende de resultados (que ya usa useMemo internamente), evitando recreaciones en renders sin cambios
   const exportCSV = useCallback(() => {
-    const escaparCSV = (val: string | number | boolean): string => {
-      const str = String(val)
-      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        return `"${str.replace(/"/g, '""')}"`
-      }
-      return str
-    }
     const headers = ['Nombre', 'Principio Activo', 'Categoría', 'Presentación', 'Laboratorio',
       'Precio Compra', 'Precio Venta', 'Stock', 'Stock Mínimo', 'Vencimiento', 'Lote', 'Receta', 'Ubicación']
+
     const rows = resultados.map((m) => [
       escaparCSV(m.nombre), escaparCSV(m.principioActivo), escaparCSV(m.categoria), escaparCSV(m.presentacion), escaparCSV(m.laboratorio),
       escaparCSV(m.precioCompra), escaparCSV(m.precioVenta), escaparCSV(m.stock), escaparCSV(m.stockMinimo),
       escaparCSV(m.fechaVencimiento), escaparCSV(m.lote), escaparCSV(m.requiereReceta ? 'Sí' : 'No'), escaparCSV(m.ubicacion)
     ])
-    const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+
+    // Crear CSV con separador punto y coma para Excel (evita conflictos con comas)
+    const csvRows = [headers.join(';'), ...rows.map(r => r.join(';'))]
+    const csvContent = csvRows.join('\n')
+
+    // Agregar BOM explícitamente
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' })
+
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
