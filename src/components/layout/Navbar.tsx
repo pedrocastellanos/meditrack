@@ -9,7 +9,8 @@ const links = [
 ]
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useThemeStore()
+  const theme = useThemeStore((s) => s.theme)
+  const toggleTheme = useThemeStore((s) => s.toggleTheme)
 
   return (
     <nav className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md shadow-lg shadow-gray-200/50 dark:shadow-black/20 sticky top-0 z-50 transition-colors duration-300 border-b border-gray-100 dark:border-gray-700">

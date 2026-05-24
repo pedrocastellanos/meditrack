@@ -51,7 +51,9 @@ interface Props {
 }
 
 export default function MedicamentoForm({ medicamento, onSubmitSuccess }: Props) {
-  const { medicamentos, agregarMedicamento, actualizarMedicamento } = useMedicamentosStore()
+  const medicamentos = useMedicamentosStore((s) => s.medicamentos)
+  const agregarMedicamento = useMedicamentosStore((s) => s.agregarMedicamento)
+  const actualizarMedicamento = useMedicamentosStore((s) => s.actualizarMedicamento)
   const { notificaciones, notificar, eliminar } = useNotification()
 
   const defaultValues: MedicamentoFormValues = medicamento ? {
