@@ -1,0 +1,12 @@
+{
+  "name": "meditrack-workspace",
+  "private": true,
+  "packageManager": "pnpm@12.4.2",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @meditrack/backend --filter meditrack dev",
+    "dev:frontend": "pnpm --filter meditrack dev",
+    "dev:backend": "pnpm --filter @meditrack/backend dev",
+    "build": "pnpm --filter @meditrack/backend build && pnpm --filter meditrack build",
+    "test": "pnpm --filter meditrack test"
+  }
+}

@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Medicamento {
+  id                 String      @id
+  nombre             String      @unique
+  principioActivo    String
+  categoria          String
+  presentacion       String
+  laboratorio        String
+  precioCompra       Float
+  precioVenta        Float
+  stock              Int         @default(0)
+  stockMinimo        Int         @default(0)
+  fechaVencimiento   String
+  lote               String
+  requiereReceta     Boolean     @default(false)
+  ubicacion          String      @default("")
+  notas              String      @default("")
+  fechaRegistro      String
+  historialMovimientos Movimiento[]
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+}
+
+model Movimiento {
+  id               String      @id
+  medicamentoId    String
+  tipo             String
+  cantidad         Int
+  motivo           String
+  fecha            String
+  stockResultante  Int
+  medicamento      Medicamento @relation(fields: [medicamentoId], references: [id], onDelete: Cascade)
+
+  @@index([medicamentoId, fecha])
+}
